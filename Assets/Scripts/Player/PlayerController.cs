@@ -18,13 +18,16 @@ public class PlayerController : MonoBehaviour
 
     public bool isGrounded = true;
 
+
+    private float jumpHeight = 1.0f;
+    private float gravityValue = 0f;
     private void Start()
     {
         _motor = GetComponent<PlayerMotor>();
         rb = GetComponent<Rigidbody>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        jump = new Vector3(0.0f, 10.0f, 0.0f);
+        jump = new Vector3(0.0f,20.0f, 0.0f);
     }
 
     private void Update()
@@ -63,10 +66,16 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            print("CONNARD");
             rb.AddForce(jump, ForceMode.Impulse);
             isGrounded = false;
         }
+
+        //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        //{
+        //    print("CONNARD");
+
+        //    _velocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+        //}
 
     }
 
