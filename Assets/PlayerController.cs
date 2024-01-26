@@ -13,8 +13,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _mouseSentitivityX = 3f;
     [SerializeField] private float _mouseSentitivityY = 3f;
 
+    public Vector3 jump;
     public float jumpForce = 5.0f;
-    public bool isGrounded;
+
+    public bool isGrounded = true;
 
     private void Start()
     {
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        jump = new Vector3(0.0f, 10.0f, 0.0f);
     }
 
     private void Update()
@@ -58,9 +61,11 @@ public class PlayerController : MonoBehaviour
         _motor.RotateCamera(cameraRotationX);
 
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            print("CONNARD");
+            rb.AddForce(jump, ForceMode.Impulse);
+            isGrounded = false;
         }
 
     }
@@ -70,13 +75,8 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
     }
 
-    void OnCollisionStay(Collision collision)
+    void OnCollisionStay()
     {
         isGrounded = true;
-    }
-
-    void OnCollisionExit(Collision collision)
-    {
-        isGrounded = false;
     }
 }
