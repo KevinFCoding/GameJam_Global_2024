@@ -38,6 +38,8 @@ public class PlayerMotor : MonoBehaviour
     {
         PerformMovement();
         PerformRotation();
+
+        
     }
 
     public void PerformMovement()
