@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     
     private float stateTimer = 4f;
     private AiEnemyController aiEnemyController;
+    private SpawnController spawnController;
     private float timer;
     private float couldown = 8f;
     private void Start()
@@ -22,6 +23,10 @@ public class EnemyController : MonoBehaviour
 
         timer = stateTimer;
         aiEnemyController = GetComponent<AiEnemyController>();
+        GameObject gameController = GameObject.Find("GameController");
+
+        spawnController = gameController.GetComponent<SpawnController>();
+        
 
     }
     
@@ -51,11 +56,9 @@ public class EnemyController : MonoBehaviour
         
         if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out var hit, Mathf.Infinity))
         {
-            Debug.DrawLine(transform.position, hit.collider.gameObject.transform.position, Color.red);
 
             if (hit.collider.gameObject.CompareTag("Player"))
             {
-                Debug.Log("Did Hit");
                 
                 //Destroy();
             }
@@ -106,6 +109,8 @@ public class EnemyController : MonoBehaviour
     void Destroy()
     {
         Destroy(gameObject);
+        spawnController.Resurerection();
+        
     }
     
     void OnTriggerEnter(Collider other)
