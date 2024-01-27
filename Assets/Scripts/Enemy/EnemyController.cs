@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour
     private float stateTimer = 4f;
     private AiEnemyController aiEnemyController;
     private float timer;
-
+    private float couldown = 8f;
     private void Start()
     {
         Debug.Log("stateTimer"+stateTimer);
@@ -34,17 +34,25 @@ public class EnemyController : MonoBehaviour
     {
 
         timer -= Time.deltaTime;
-
+        couldown -= Time.deltaTime;
+    
         if (timer <= 0)
         {
             ChangeState();
             timer = stateTimer;
+        }
+        if(couldown <= 0)
+        {
+            aiEnemyController.changeState(Mood.Escaping);
+            couldown = 8f;
         }
         
         
         
         if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out var hit, Mathf.Infinity))
         {
+            Debug.DrawLine(transform.position, hit.collider.gameObject.transform.position, Color.red);
+
             if (hit.collider.gameObject.CompareTag("Player"))
             {
                 Debug.Log("Did Hit");
@@ -57,6 +65,7 @@ public class EnemyController : MonoBehaviour
 
     void ChangeState()
     {
+
         switch (currentState)
         {
 
@@ -71,10 +80,13 @@ public class EnemyController : MonoBehaviour
                 currentState = EnemyState.Green;
                 break;
         }
+        Debug.Log("state");
+        Debug.Log(currentState);
     }
 
     public void Reaction(EnemyState state)
     {
+
         switch (state)
         {
             case EnemyState.Green:
@@ -84,6 +96,7 @@ public class EnemyController : MonoBehaviour
                 aiEnemyController.changeState(Mood.Escaping);
                 break;
             case EnemyState.Red:
+                Debug.Log("oh no");
                 aiEnemyController.changeState(Mood.Chaising);
                 break;
         }
