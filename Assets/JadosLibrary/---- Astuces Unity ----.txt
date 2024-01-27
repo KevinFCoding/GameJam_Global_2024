@@ -1,0 +1,8 @@
+---- Bouger la camera dans un angle precis sans avoir a la deplacer ----
+
+	Depuis l'onglet scene aller a l'endroit où la camera devrait regarder 
+	(comme si c'etait l'onglet game)
+	Faire Clic droit sur la camera dans la hierarchie 
+	Selectionner "Align with View"
+
+------------------------------------------------------------------------
