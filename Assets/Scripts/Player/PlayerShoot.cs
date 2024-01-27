@@ -14,6 +14,8 @@ public class PlayerShoot : MonoBehaviour
 
     [SerializeField] ShakyCame _shakyCame;
 
+    
+    
     void Start()
     {
         if (playerCamera == null)
@@ -39,13 +41,15 @@ public class PlayerShoot : MonoBehaviour
 
         if (Physics.Raycast(rayOrigin, playerCamera.transform.forward, out hit, weaponRange))
         {
-            if (hit.collider.tag == "enemy")
+            
+            if (hit.collider.gameObject.CompareTag("Enemy"))
             {
-                hit.rigidbody.AddForce(-hit.normal * 100f);
-                print("PAN");
-
-
+                Debug.Log("Did Hit");
+                EnemyController  ennemy = hit.collider.gameObject.GetComponent<EnemyController>();
+                ennemy.Reaction(ennemy.GetCurrentState());  
+                //Destroy();
             }
+
         }
         _shootEffect.Play();
     }

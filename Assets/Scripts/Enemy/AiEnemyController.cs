@@ -25,6 +25,7 @@ namespace Enemy
         private GameObject _player;
 
         private bool _walkPointSet = false;
+        private bool _isAttacked = false;
         private bool _playerInSightRange;
         bool _isSafe = false;
         private const float RangeAgainstPlayer = 50f;
@@ -55,6 +56,16 @@ namespace Enemy
         public void changeState(Mood state)
         {
             _mood = state;
+            if (_mood == Mood.Chaising)
+            {
+                _isAttacked = true;
+            }
+            else
+            {
+                _isAttacked = false;
+            }
+            Action();
+
         }
 
         private bool getIfCurrentWayPointIsReached()
@@ -78,16 +89,20 @@ namespace Enemy
         
         private void FixedUpdate()
         {
+            Action();
+        }
+
+        private void Action()
+        {
             Transform playerTransform = _player.transform;
             Vector3 distanceToPlayer = transform.position - playerTransform.position;
             float speed = _agent.velocity.magnitude;
             // Vérifie si l'IA a atteint un waypoint sûr
             _isSafe = getIfCurrentWayPointIsReached();
-            if (_isSafe)
+            if (_isSafe && !_isAttacked)
             {
                 _mood = Mood.Patrolling;
             }
-
             switch (_mood)
             {
                 case Mood.Escaping:
@@ -104,24 +119,26 @@ namespace Enemy
                 case Mood.Patrolling:
                     if (distanceToPlayer.magnitude < RangeAgainstPlayer)
                     {
-                        _mood = Mood.Escaping; // Revenir en mode Escaping si le joueur est trop proche
+                        _mood = Mood.Escaping; 
                     }
                     else
                     {
-                        Patroling(); // Continuer à patrouiller si le joueur n'est pas proche
+                        Patroling(); 
                     }
                     break;
 
-                case Mood.Chaising: // Si vous souhaitez ajouter ce comportement plus tard
+                case Mood.Chaising: 
                     ChaisePlayer();
                     break;
             }
-        }
 
+        }
 
         // chaising the player
         private void ChaisePlayer()
         {
+            Debug.Log(" ChaisePlayer");
+            Debug.Log(_agent);
             _animator.SetFloat("speed", 1.1f);
             _agent.speed = 14f;
             _agent.SetDestination(_player.transform.position);
