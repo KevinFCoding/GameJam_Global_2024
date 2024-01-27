@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,31 +10,30 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _currentSpeed;
     private PlayerMotor _motor;
     public Rigidbody rb;
-    public float gravityScale = 50;
+    private float gravityScale = 3f;
     [SerializeField] private float _mouseSentitivityX = 3f;
     [SerializeField] private float _mouseSentitivityY = 3f;
 
     public Vector3 jump;
-    public float jumpForce = 5.0f;
-
+    private float groundedDelay = 0.2f; // Délai de 0.2 secondes
+    private float lastJumpTime;
     public bool isGrounded = true;
-
-
-    private float jumpHeight = 1.0f;
-    private float gravityValue = 0f;
+    private float gravity = 9.81f;
+    private bool canDoubleJump = true;
     private void Start()
     {
         _motor = GetComponent<PlayerMotor>();
         rb = GetComponent<Rigidbody>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        jump = new Vector3(0.0f,20.0f, 0.0f);
+        jump = new Vector3(0.0f,2.0f, 0.0f);
     }
 
     private void Update()
     {
         float xMov = Input.GetAxis("Horizontal");
         float zMov = Input.GetAxis("Vertical");
+
 
         Vector3 moveHozirontal = transform.right * xMov;
         Vector3 moveVertical = transform.forward * zMov;
@@ -64,28 +64,71 @@ public class PlayerController : MonoBehaviour
         _motor.RotateCamera(cameraRotationX);
 
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if ( Input.GetKeyDown(KeyCode.Space) )
         {
-            rb.AddForce(jump, ForceMode.Impulse);
-            isGrounded = false;
+            Debug.Log("canDoubleJump");
+            Debug.Log(canDoubleJump);
+            if (isGrounded && (Time.time - lastJumpTime >= groundedDelay))
+            {
+                rb.AddForce(new Vector3(0.0f, 2.0f, 0.0f) * 7f, ForceMode.Impulse);
+                isGrounded = false;
+                canDoubleJump = true;
+                lastJumpTime = Time.time;  
+            }else if (canDoubleJump)
+            {
+                rb.AddForce(new Vector3(0.0f, 2.0f, 0.0f) * 7f, ForceMode.Impulse);
+                isGrounded = false;
+                canDoubleJump = false;
+                lastJumpTime = Time.time;  
+            }
+
         }
-
-        //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        //{
-        //    print("CONNARD");
-
-        //    _velocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        //}
 
     }
 
     private void FixedUpdate()
     {
-        rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
+        rb.AddForce(Vector3.down * gravity * rb.mass * gravityScale);
+
     }
 
-    void OnCollisionStay()
+
+    void OnCollisionStay(Collision hit)
     {
-        isGrounded = true;
+        if (Time.time - lastJumpTime < groundedDelay) return; 
+
+            // Même logique que dans OnCollisionStay
+        foreach (ContactPoint contact in hit.contacts)
+        {
+            //Debug.Log("Vector3.Angle(contact.normal");
+            //Debug.Log(Vector3.Angle(contact.normal,Vector3.up));
+            if (Vector3.Angle(contact.normal, Vector3.up) < 80)
+            {
+                isGrounded = true;
+                canDoubleJump = true;
+
+                break;
+            }
+        }
     }
+
+
+    void OnCollisionEnter(Collision hit)
+    {
+        if (Time.time - lastJumpTime < groundedDelay) return; 
+
+
+        foreach (ContactPoint contact in hit.contacts)
+        {
+            if (Vector3.Angle(contact.normal, Vector3.up) < 45)
+            {
+                isGrounded = true;
+                canDoubleJump = true;
+
+                break;
+            }
+        }
+        //}
+    }
+
 }

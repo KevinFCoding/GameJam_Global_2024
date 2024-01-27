@@ -137,8 +137,6 @@ namespace Enemy
         // chaising the player
         private void ChaisePlayer()
         {
-            Debug.Log(" ChaisePlayer");
-            Debug.Log(_agent);
             _animator.SetFloat("speed", 1.1f);
             _agent.speed = 14f;
             _agent.SetDestination(_player.transform.position);

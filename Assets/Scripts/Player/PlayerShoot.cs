@@ -9,8 +9,11 @@ public class PlayerShoot : MonoBehaviour
     public float weaponRange = 50f;
     public Transform gunEnd;
     [SerializeField] ParticleSystem _shootEffect;
-    private WaitForSeconds shotDuration = new WaitForSeconds(0.07f);
+    //private WaitForSeconds shotDuration = new WaitForSeconds(2f);
     private float nextFire;
+    private float timeSinceLastShot = 0f;
+    private float shootDelay = 2f; // Délai de 5 secondes
+    [SerializeField] private CringeBar cringeBar;
 
     [SerializeField] ShakyCame _shakyCame;
 
@@ -18,39 +21,95 @@ public class PlayerShoot : MonoBehaviour
     
     void Start()
     {
+        cringeBar = GameObject.Find("CanvasPlayer").GetComponent<CringeBar>();
         if (playerCamera == null)
         {
             playerCamera = Camera.main;
         }
     }
-
-    void Update()
+    private void Update()
     {
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
+        
+        
+        if (cringeBar.GetCringe() >= 100f)
         {
-            nextFire = Time.time + fireRate;
-            Shoot();
+            // gameover
+        }
+        else
+        {
+            cringeAccumulator += Time.deltaTime;
 
+            if (cringeAccumulator >= 1f)
+            {
+                cringeAccumulator -= 1f;
+                cringeBar.SetCringe(cringeBar.GetCringe() + 1f);
+
+            }
+        }
+        // increase cringe by one per second
+
+        if (timeSinceLastShot < shootDelay)
+        {
+            timeSinceLastShot += Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Shoot();
         }
     }
+    private float cringeAccumulator = 0f; // Accumulateur pour gérer l'incrément de cringe
+
+
+
+
 
     void Shoot()
     {
+        if (timeSinceLastShot < shootDelay)
+        {
+            return; // Pas encore prêt à tirer
+        }
+
+        
         Vector3 rayOrigin = playerCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
         if (Physics.Raycast(rayOrigin, playerCamera.transform.forward, out hit, weaponRange))
         {
-            
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
                 Debug.Log("Did Hit");
-                EnemyController  ennemy = hit.collider.gameObject.GetComponent<EnemyController>();
-                ennemy.Reaction(ennemy.GetCurrentState());  
-                //Destroy();
+                EnemyController ennemy = hit.collider.gameObject.GetComponent<EnemyController>();
+                EnemyState states = ennemy.GetCurrentState();
+                ChangeCringe(states);
+                ennemy.Reaction(states);  
             }
-
         }
         _shootEffect.Play();
+
+        // Réinitialiser le temps depuis le dernier tir
+        timeSinceLastShot = 0f;
     }
+
+    void ChangeCringe(EnemyState states)
+    {
+        float cringe = cringeBar.GetCringe();
+        switch (states)
+        {
+            case EnemyState.Red:
+                cringe += 10f;
+                cringeBar.SetCringe(cringe);
+                break;
+            case EnemyState.Yellow:
+                cringe += 5f;
+                cringeBar.SetCringe(cringe);
+                break;
+            case EnemyState.Green:
+                cringe -= 5f;
+                cringeBar.SetCringe(cringe);
+                break;
+        }
+    }
+
 }
