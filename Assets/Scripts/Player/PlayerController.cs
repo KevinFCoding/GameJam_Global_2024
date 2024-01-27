@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
         float xMov = Input.GetAxis("Horizontal");
         float zMov = Input.GetAxis("Vertical");
 
+
         Vector3 moveHozirontal = transform.right * xMov;
         Vector3 moveVertical = transform.forward * zMov;
 
@@ -96,12 +97,6 @@ public class PlayerController : MonoBehaviour
     {
         if (Time.time - lastJumpTime < groundedDelay) return; 
 
-        // if (hit.gameObject.CompareTag("Wall"))
-        // {
-        //     isGrounded = false;
-        // }
-        // else
-        // {
             // Même logique que dans OnCollisionStay
         foreach (ContactPoint contact in hit.contacts)
         {
@@ -122,14 +117,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Time.time - lastJumpTime < groundedDelay) return; 
 
-        // if(hit.gameObject.CompareTag("Wall"))
-        // {
-        //     isGrounded = false;
-        //
-        // }
-        // else
-        // {
-            // Même logique que dans OnCollisionStay
+
         foreach (ContactPoint contact in hit.contacts)
         {
             if (Vector3.Angle(contact.normal, Vector3.up) < 45)
