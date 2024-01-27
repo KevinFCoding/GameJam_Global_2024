@@ -11,6 +11,7 @@ public class SpawnController : MonoBehaviour
     [SerializeField]
     private GameObject _enemyPrefab;
     public List<Spawnner> spawnners;
+    
     void Start()
     {
         SpawnEnemy(spawnners);
@@ -20,11 +21,12 @@ public class SpawnController : MonoBehaviour
     void Update()
     {
         
+        
+        
     }
 
     void SpawnEnemy( List<Spawnner> spawnners)
     {
-        // loop through the list of spawnners and spawn
         foreach (Spawnner spawnner in spawnners)
         {
             Instantiate(_enemyPrefab, new Vector3(spawnner.positionX, spawnner.positionY, spawnner.positionZ), Quaternion.identity);
@@ -33,5 +35,19 @@ public class SpawnController : MonoBehaviour
 
     }
 
+    public void Resurerection()
+    {
+        StartCoroutine(ResurectionRoutine());
+      
+    }
+    IEnumerator ResurectionRoutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        int randomSpawnner = Random.Range(0, spawnners.Count);
+        Spawnner spawnner = spawnners[randomSpawnner];
+        Instantiate(_enemyPrefab, new Vector3(spawnner.positionX, spawnner.positionY, spawnner.positionZ), Quaternion.identity);
+
+    }
 
 }

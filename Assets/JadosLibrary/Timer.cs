@@ -43,6 +43,7 @@ public class Timer : MonoBehaviour
     void IncreaseTimer()
     {
         seconds += Time.deltaTime;
+        
         if (_isTextToShow)
         {
             ShowTimer();
