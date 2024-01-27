@@ -5458,6 +5458,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 247513505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &158633756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 158633758}
+  - component: {fileID: 158633757}
+  m_Layer: 0
+  m_Name: TimerCringe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &158633757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158633756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e776896e7cda04d8c73305607605b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _secondToStart: 0
+  _isIncrement: 1
+  _isTextToShow: 0
+  scoreText: {fileID: 0}
+--- !u!4 &158633758
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158633756}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1153.3978, y: 1136.884, z: -28.835587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &163634104
 Mesh:
   m_ObjectHideFlags: 0
@@ -25481,10 +25529,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasPlayer
       objectReference: {fileID: 0}
-    - target: {fileID: 3400884195519421905, guid: 82d036063e9f5314bb4056233e8cdd1f, type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
     - target: {fileID: 5180048110808288624, guid: 82d036063e9f5314bb4056233e8cdd1f, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -25633,8 +25677,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2039398145}
+  m_Children: []
   m_Father: {fileID: 689784226}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -76081,7 +76124,7 @@ GameObject:
   - component: {fileID: 2039398147}
   - component: {fileID: 2039398146}
   m_Layer: 5
-  m_Name: CringeBar
+  m_Name: InputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76100,7 +76143,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1102288720}
-  m_Father: {fileID: 689826691}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -82165,6 +82208,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1971905315}
+  - {fileID: 158633758}
   - {fileID: 1916963455}
   - {fileID: 211909399}
   - {fileID: 689784225}
@@ -82197,3 +82241,4 @@ SceneRoots:
   - {fileID: 805047915}
   - {fileID: 1564393763}
   - {fileID: 1599439562}
+  - {fileID: 2039398145}
