@@ -25,7 +25,6 @@ MonoBehaviour:
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
   controlID: 81938
-  controlID: 125638
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52

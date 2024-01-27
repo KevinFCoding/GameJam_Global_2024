@@ -53,7 +53,7 @@ public class PlayerShoot : MonoBehaviour
             TakeCring(-5);
 
         }
-        if (_cringe >= 100f)
+        if (_cringe >= 35f)
         {
             GameOver();
         }
@@ -64,7 +64,7 @@ public class PlayerShoot : MonoBehaviour
             if (cringeAccumulator >= 1f)
             {
                 cringeAccumulator -= 1f;
-                _cringe+=10;
+                _cringe+=1;
                 _cringeSlider.UpdateSliderLifeBar();
             }
         }
@@ -115,13 +115,11 @@ public class PlayerShoot : MonoBehaviour
         switch (states)
         {
             case EnemyState.Red:
-                TakeCring(10);
+                TakeCring(5);
 
                 break;
             case EnemyState.Yellow:
-                TakeCring(5);
-
-
+                TakeCring(1);
 
                 break;
             case EnemyState.Green:
