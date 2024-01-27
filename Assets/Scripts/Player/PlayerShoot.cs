@@ -9,7 +9,6 @@ public class PlayerShoot : MonoBehaviour
     public float weaponRange = 50f;
     public Transform gunEnd;
     [SerializeField] ParticleSystem _shootEffect;
-    //private WaitForSeconds shotDuration = new WaitForSeconds(2f);
     private float nextFire;
     private float timeSinceLastShot = 0f;
     private float shootDelay = 0.3f; // Délai de 5 secondes
@@ -18,9 +17,12 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] ShakyCame _shakyCame;
     [SerializeField] GameObject _goUI;
     [SerializeField] PauseMenu _pauseMenu;
+    [SerializeField] CringeBar _cringeSlider;
 
-    
-    
+    public int _cringe = 0; 
+
+
+
     void Start()
     {
         cringeBar = GameObject.Find("CanvasPlayer").GetComponent<CringeBar>();
@@ -28,15 +30,32 @@ public class PlayerShoot : MonoBehaviour
         {
             playerCamera = Camera.main;
         }
+        _cringeSlider.cringeSlider.value = _cringe;
+        _cringeSlider.UpdateSliderLifeBar();
+    }
+
+    public void TakeCring(int _taken)
+    {
+        _cringe += _taken;
+        _cringeSlider.UpdateSliderLifeBar();
+
+    }
+
+    public void GameOver()
+    {
+        _goUI.SetActive(true);
+        _pauseMenu.Paused();
     }
     private void Update()
     {
-        
-        
-        if (cringeBar.GetCringe() >= 100f)
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            _goUI.SetActive(true);
-            _pauseMenu.Paused();
+            TakeCring(-5);
+
+        }
+        if (_cringe >= 100f)
+        {
+            GameOver();
         }
         else
         {
@@ -45,8 +64,8 @@ public class PlayerShoot : MonoBehaviour
             if (cringeAccumulator >= 1f)
             {
                 cringeAccumulator -= 1f;
-                cringeBar.SetCringe(cringeBar.GetCringe() + 1f);
-
+                _cringe+=10;
+                _cringeSlider.UpdateSliderLifeBar();
             }
         }
         // increase cringe by one per second
@@ -63,10 +82,6 @@ public class PlayerShoot : MonoBehaviour
     }
     private float cringeAccumulator = 0f; // Accumulateur pour gérer l'incrément de cringe
 
-
-
-
-
     void Shoot()
     {
         if (timeSinceLastShot < shootDelay)
@@ -82,7 +97,6 @@ public class PlayerShoot : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
-                Debug.Log("Did Hit");
                 EnemyController ennemy = hit.collider.gameObject.GetComponent<EnemyController>();
                 EnemyState states = ennemy.GetCurrentState();
                 ChangeCringe(states);
@@ -97,20 +111,23 @@ public class PlayerShoot : MonoBehaviour
 
     void ChangeCringe(EnemyState states)
     {
-        float cringe = cringeBar.GetCringe();
+        
         switch (states)
         {
             case EnemyState.Red:
-                cringe += 10f;
-                cringeBar.SetCringe(cringe);
+                TakeCring(10);
+
                 break;
             case EnemyState.Yellow:
-                cringe += 5f;
-                cringeBar.SetCringe(cringe);
+                TakeCring(5);
+
+
+
                 break;
             case EnemyState.Green:
-                cringe -= 5f;
-                cringeBar.SetCringe(cringe);
+                TakeCring(-5);
+
+
                 break;
         }
     }
