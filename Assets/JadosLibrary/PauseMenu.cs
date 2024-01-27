@@ -35,4 +35,10 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Resume();
     }
+
+    public void Menu() // Fonction qui relance la scene 
+    {
+        Resume();
+        SceneManager.LoadScene("MenuScene");
+    }
 }   
