@@ -37,7 +37,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (Physics.Raycast(rayOrigin, playerCamera.transform.forward, out hit, weaponRange))
         {
-            if (hit.rigidbody != null)
+            if (hit.collider.tag == "enemy")
             {
                 hit.rigidbody.AddForce(-hit.normal * 100f);
                 print("PAN");
