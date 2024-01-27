@@ -18,11 +18,9 @@ public class CharacterController : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out var hit,
                 Mathf.Infinity))
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance,
-                Color.yellow);
+
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
-                Debug.Log("Did Hit");
                 EnemyController  ennemy = hit.collider.gameObject.GetComponent<EnemyController>();
                
                 ennemy.Reaction(ennemy.GetCurrentState());

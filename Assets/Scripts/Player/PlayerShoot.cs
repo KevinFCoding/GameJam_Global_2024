@@ -9,8 +9,10 @@ public class PlayerShoot : MonoBehaviour
     public float weaponRange = 50f;
     public Transform gunEnd;
     [SerializeField] ParticleSystem _shootEffect;
-    private WaitForSeconds shotDuration = new WaitForSeconds(0.07f);
+    //private WaitForSeconds shotDuration = new WaitForSeconds(2f);
     private float nextFire;
+    private float timeSinceLastShot = 0f;
+    private float shootDelay = 2f; // Délai de 5 secondes
 
     [SerializeField] ShakyCame _shakyCame;
 
@@ -23,34 +25,45 @@ public class PlayerShoot : MonoBehaviour
             playerCamera = Camera.main;
         }
     }
-
-    void Update()
+    private void Update()
     {
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
-        {
-            nextFire = Time.time + fireRate;
-            Shoot();
 
+        if (timeSinceLastShot < shootDelay)
+        {
+            timeSinceLastShot += Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Shoot();
         }
     }
 
+
+
     void Shoot()
     {
+        if (timeSinceLastShot < shootDelay)
+        {
+            return; // Pas encore prêt à tirer
+        }
+
         Vector3 rayOrigin = playerCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
         if (Physics.Raycast(rayOrigin, playerCamera.transform.forward, out hit, weaponRange))
         {
-            
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
                 Debug.Log("Did Hit");
-                EnemyController  ennemy = hit.collider.gameObject.GetComponent<EnemyController>();
+                EnemyController ennemy = hit.collider.gameObject.GetComponent<EnemyController>();
                 ennemy.Reaction(ennemy.GetCurrentState());  
-                //Destroy();
             }
-
         }
         _shootEffect.Play();
+
+        // Réinitialiser le temps depuis le dernier tir
+        timeSinceLastShot = 0f;
     }
+
 }

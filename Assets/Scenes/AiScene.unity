@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 126666629}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 349544456}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -821,7 +821,7 @@ GameObject:
   - component: {fileID: 1565134230}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -920,6 +920,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3065068460829027013, guid: 77c625cc3498c064da6cde067427d602, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3676567074840124094, guid: 77c625cc3498c064da6cde067427d602, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047500214309053222, guid: 77c625cc3498c064da6cde067427d602, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5669207747561366449, guid: 77c625cc3498c064da6cde067427d602, type: 3}
       propertyPath: m_Name
       value: Player
@@ -930,7 +942,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5708802014274684998, guid: 77c625cc3498c064da6cde067427d602, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.08
+      value: 23.78
       objectReference: {fileID: 0}
     - target: {fileID: 5708802014274684998, guid: 77c625cc3498c064da6cde067427d602, type: 3}
       propertyPath: m_LocalPosition.z
@@ -963,6 +975,30 @@ PrefabInstance:
     - target: {fileID: 5708802014274684998, guid: 77c625cc3498c064da6cde067427d602, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5723111302217564283, guid: 77c625cc3498c064da6cde067427d602, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 5723111302217564283, guid: 77c625cc3498c064da6cde067427d602, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879507092223201077, guid: 77c625cc3498c064da6cde067427d602, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7948134417946749897, guid: 77c625cc3498c064da6cde067427d602, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077252035313249009, guid: 77c625cc3498c064da6cde067427d602, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8548090586835437194, guid: 77c625cc3498c064da6cde067427d602, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
