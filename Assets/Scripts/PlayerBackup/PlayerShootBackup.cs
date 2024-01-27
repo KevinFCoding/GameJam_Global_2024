@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShoot : MonoBehaviour
+public class PlayerShootBackup : MonoBehaviour
 {
     public Camera playerCamera;
     public float fireRate = 0.25f;
     public float weaponRange = 50f;
     public Transform gunEnd;
-    [SerializeField] ParticleSystem _shootEffect;
+
     private WaitForSeconds shotDuration = new WaitForSeconds(0.07f);
     private float nextFire;
-
-    [SerializeField] ShakyCame _shakyCame;
 
     void Start()
     {
@@ -44,9 +42,7 @@ public class PlayerShoot : MonoBehaviour
                 hit.rigidbody.AddForce(-hit.normal * 100f);
                 print("PAN");
 
-
             }
         }
-        _shootEffect.Play();
     }
 }
