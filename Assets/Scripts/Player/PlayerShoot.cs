@@ -12,10 +12,12 @@ public class PlayerShoot : MonoBehaviour
     //private WaitForSeconds shotDuration = new WaitForSeconds(2f);
     private float nextFire;
     private float timeSinceLastShot = 0f;
-    private float shootDelay = 2f; // Délai de 5 secondes
+    private float shootDelay = 0.3f; // Délai de 5 secondes
     [SerializeField] private CringeBar cringeBar;
 
     [SerializeField] ShakyCame _shakyCame;
+    [SerializeField] GameObject _goUI;
+    [SerializeField] PauseMenu _pauseMenu;
 
     
     
@@ -33,7 +35,8 @@ public class PlayerShoot : MonoBehaviour
         
         if (cringeBar.GetCringe() >= 100f)
         {
-            // gameover
+            _goUI.SetActive(true);
+            _pauseMenu.Paused();
         }
         else
         {
