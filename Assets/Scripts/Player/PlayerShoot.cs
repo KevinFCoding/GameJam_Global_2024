@@ -25,7 +25,11 @@ public class PlayerShoot : MonoBehaviour
     public bool isAlive = true;
     [SerializeField] PlayerController _playerController;
 
-    public int _cringe = 0; 
+    public int _cringe = 0;
+
+    [SerializeField] List<AudioClip> jokes;
+    [SerializeField] AudioSource audioManager;
+    [SerializeField] AudioSource audioJokesManager;
 
 
 
@@ -155,10 +159,20 @@ public class PlayerShoot : MonoBehaviour
                 break;
             case EnemyState.Green:
                 TakeSuccessHit();
-
-
+                PlayJoke();
                 break;
         }
+    }
+    private void PlayJoke()
+    {
+        audioJokesManager.PlayOneShot(jokes[Random.Range(0, jokes.Count - 1)], 1);
+        audioManager.volume = 0.4f;
+        Invoke("ResetVolume", 3f);
+    }
+
+    private void ResetVolume ()
+    {
+        audioManager.volume = 1f;
     }
 
 }
