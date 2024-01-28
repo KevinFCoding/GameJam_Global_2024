@@ -1,10 +1,10 @@
 using UnityEngine;
 
 // Ce script est le script AudioManager
-// Il est a mettre sur un game object à part avec une audioSource
+// Il est a mettre sur un game object ï¿½ part avec une audioSource
 
 // Il faut remplir la liste avec une ou plusieurs musiques
-// L'indexe à remplir est la première musiquue a jouer 
+// L'indexe ï¿½ remplir est la premiï¿½re musiquue a jouer 
 // Si l'indexe n'est pas dans la liste c'est la musique a l'indexe 0 qui se lance
 // Si la musique ne loop pas, elle se joue dans l'ordre de la liste et reboute a l'indexe 0
 public class AudioManager : MonoBehaviour
@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour
         else
         {
                 _indexFirstMusic++;
-                if (_indexFirstMusic > songs.Length)
+                if (_indexFirstMusic > songs.Length - 1)
                 {
                     _indexFirstMusic = 0;
                 }

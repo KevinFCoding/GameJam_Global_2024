@@ -181,7 +181,7 @@ namespace Enemy
             EmotionalSkin("ANGRY");
             
             _animator.SetFloat("speed", 1.1f);
-            _agent.speed = 0f;
+            _agent.speed = 14f;
             _agent.SetDestination(_player.transform.position);
         }
 
@@ -194,7 +194,7 @@ namespace Enemy
             Transform fleeWaypoint = SelectFleeWaypoint();
             _animator.SetFloat("speed", 1.1f);
 
-            _agent.speed = 0f;
+            _agent.speed = 14f;
             if (fleeWaypoint != null)
             {
                 _agent.SetDestination(fleeWaypoint.position);
@@ -242,7 +242,7 @@ namespace Enemy
 
             _animator.SetFloat("speed", 0.49f);
 
-            _agent.speed = 0f;
+            _agent.speed = 8f;
 
             if (!_walkPointSet)
                 SearchWalkPoint();
