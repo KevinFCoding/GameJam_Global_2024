@@ -15,7 +15,7 @@ public class MenuManager : MonoBehaviour
     void Start()
     {
         _planete.Play();
-        Invoke("CallFeuArtifice", 7f);
+        Invoke("CallFeuArtifice", 8f);
     }
 
     public void CallFeuArtifice()
