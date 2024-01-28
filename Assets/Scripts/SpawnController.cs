@@ -17,19 +17,14 @@ public class SpawnController : MonoBehaviour
         SpawnEnemy(spawnners);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-        
-        
-    }
-
     void SpawnEnemy( List<Spawnner> spawnners)
     {
+        Debug.Log("SpawnEnemy");
+        Debug.Log(_enemyPrefab.Count);
+        
         foreach (Spawnner spawnner in spawnners)
         {
-            Instantiate(_enemyPrefab[Random.Range(0,_enemyPrefab.Count-1)], spawnner.transform.position, Quaternion.identity);
+            Instantiate(_enemyPrefab[Random.Range(0,_enemyPrefab.Count)], spawnner.transform.position, Quaternion.identity);
             
         }
 
@@ -46,7 +41,7 @@ public class SpawnController : MonoBehaviour
 
         int randomSpawnner = Random.Range(0, spawnners.Count);
         Spawnner spawnner = spawnners[randomSpawnner];
-        Instantiate(_enemyPrefab[Random.Range(0, _enemyPrefab.Count - 1)], spawnner.transform.position, Quaternion.identity);
+        Instantiate(_enemyPrefab[Random.Range(0, _enemyPrefab.Count)], spawnner.transform.position, Quaternion.identity);
 
     }
 
