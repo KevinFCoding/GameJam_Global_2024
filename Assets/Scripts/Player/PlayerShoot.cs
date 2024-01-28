@@ -174,5 +174,15 @@ public class PlayerShoot : MonoBehaviour
     {
         audioManager.volume = 1f;
     }
+    
+    void OnTriggerEnter(Collider collider)
+    {
+        if(collider.gameObject.CompareTag("Enemy"))
+        {
+            TakeCring(5);
+
+        }
+        Debug.Log("Player entered the trigger zone.");
+    }
 
 }
