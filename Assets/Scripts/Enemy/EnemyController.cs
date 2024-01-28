@@ -16,7 +16,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] ParticleSystem _echecHitParticules;
     [SerializeField] ParticleSystem _successHisParticules;
     [SerializeField] ParticleSystem _explosion;
-
     private EnemyState currentState = EnemyState.Green;
 
     private float stateTimer = 4f;
@@ -33,8 +32,6 @@ public class EnemyController : MonoBehaviour
         GameObject gameController = GameObject.Find("GameController");
 
         spawnController = gameController.GetComponent<SpawnController>();
-
-
     }
 
     public EnemyState GetCurrentState()
@@ -107,6 +104,7 @@ public class EnemyController : MonoBehaviour
         switch (state)
         {
             case EnemyState.Green:
+                aiEnemyController.changeState(Mood.Dying);
                 SuccessHit();
                 _tearsParticules.Stop();
 
