@@ -38,15 +38,14 @@ public class PlayerMotor : MonoBehaviour
     {
         PerformMovement();
         PerformRotation();
-
-        
     }
 
     public void PerformMovement()
     {
         if(velocity != Vector3.zero)
         {
-            rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
+            transform.position += velocity * Time.fixedDeltaTime;
+            //rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
         }
     }
 
@@ -55,7 +54,6 @@ public class PlayerMotor : MonoBehaviour
         rb.MoveRotation(rb.rotation * Quaternion.Euler(rotation));
         _currentCameraRotationX -= _cameraRotationX;
         _currentCameraRotationX = Mathf.Clamp(_currentCameraRotationX, -_cameraRotationLimit, _cameraRotationLimit);
-
         _camera.transform.localEulerAngles = new Vector3(_currentCameraRotationX, 0f, 0f);
     }
 
