@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,7 +11,8 @@ public enum Mood
 {
     Chaising,
     Escaping,
-    Patrolling
+    Patrolling,
+    Dying
 }
 
 namespace Enemy
@@ -19,6 +22,9 @@ namespace Enemy
         public NavMeshAgent _agent;
         [SerializeField] private NavMeshSurface map;
         [SerializeField] private Transform[] _waypoints;
+        [SerializeField] List<Material> _emotionMaterials;
+        
+        private GameObject vert;
         private Animator _animator;
         private Vector3 _walkPoint;
         private float _walkPointRange = 5f;
@@ -28,9 +34,11 @@ namespace Enemy
         private bool _isAttacked = false;
         private bool _playerInSightRange;
         bool _isSafe = false;
-        private const float RangeAgainstPlayer = 5f;
+        private const float RangeAgainstPlayer = 10f;
         private Mood _mood = Mood.Patrolling;
         private Transform _currentWayPoint = null;
+        private float previousPointDistance = 0f;
+        private bool _isDead = false;
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -39,6 +47,7 @@ namespace Enemy
             map = mapObject.GetComponent<NavMeshSurface>();
             _player = GameObject.FindWithTag("Player");
 
+            vert = gameObject.transform.Find("Vert").gameObject;
 
         }
 
@@ -51,6 +60,11 @@ namespace Enemy
                 _waypoints = waypointsObject.GetComponentsInChildren<Transform>();
                 _waypoints = System.Array.FindAll(_waypoints, t => t != waypointsObject.transform);
             }
+            SearchWalkPoint();
+            _agent.SetDestination(_walkPoint);
+
+            StartCoroutine(CheckDistanceRoutine());
+
         }
 
         public void changeState(Mood state)
@@ -89,8 +103,33 @@ namespace Enemy
 
         private void FixedUpdate()
         {
-            Action();
+            if (!_isDead) Action();
+            
+            
         }
+
+        IEnumerator CheckDistanceRoutine() 
+        {
+            while (true) // Infinite loop, can be stopped or modified as per game logic
+            {
+                if (_walkPoint != null)
+                {
+                    float currentPointDistance = Vector3.Distance(transform.position, _walkPoint);
+                    float distanceChange = Mathf.Abs(currentPointDistance - previousPointDistance);
+            
+                    if (distanceChange < 0.05f)
+                    {
+                        SearchWalkPoint();
+                        _agent.SetDestination(_walkPoint);
+                    }
+
+                    previousPointDistance = currentPointDistance;
+                }
+
+                yield return new WaitForSeconds(1f); // Wait for 3 seconds before next check
+            }
+        }
+
 
         private void Action()
         {
@@ -128,7 +167,13 @@ namespace Enemy
                     break;
 
                 case Mood.Chaising:
+                    Debug.Log("chase");
                     ChaisePlayer();
+                    break;
+                
+                case Mood.Dying:
+                    _isDead = true;
+                    EmotionalSkin("LAUGHING");
                     break;
             }
 
@@ -137,6 +182,8 @@ namespace Enemy
         // chaising the player
         private void ChaisePlayer()
         {
+            EmotionalSkin("ANGRY");
+            
             _animator.SetFloat("speed", 1.1f);
             _agent.speed = 14f;
             _agent.SetDestination(_player.transform.position);
@@ -146,8 +193,9 @@ namespace Enemy
 
         private void Escape()
         {
-            Transform playerTransform = _player.transform;
-            Transform fleeWaypoint = SelectFleeWaypoint(playerTransform);
+            EmotionalSkin("CRYING");
+            
+            Transform fleeWaypoint = SelectFleeWaypoint();
             _animator.SetFloat("speed", 1.1f);
 
             _agent.speed = 14f;
@@ -163,8 +211,10 @@ namespace Enemy
 
 
 
-        private Transform SelectFleeWaypoint(Transform playerTransform)
+        private Transform SelectFleeWaypoint()
         {
+            Transform playerTransform = _player.transform;
+
             Transform bestWaypoint = null;
             float maxDistance = 0f;
 
@@ -192,9 +242,11 @@ namespace Enemy
 
         private void Patroling()
         {
+            EmotionalSkin("NEUTRAL");
+
             _animator.SetFloat("speed", 0.49f);
 
-            _agent.speed = 6f;
+            _agent.speed = 8f;
 
             if (!_walkPointSet)
                 SearchWalkPoint();
@@ -222,6 +274,12 @@ namespace Enemy
             _walkPointSet = true;
 
 
+        }
+        
+        private void EmotionalSkin(string emotion)
+        {
+            Material mat = _emotionMaterials.Find(m => m.name.Contains(emotion));
+            vert.GetComponent<SkinnedMeshRenderer>().SetMaterials(new List<Material>(){mat});
         }
 
     }
