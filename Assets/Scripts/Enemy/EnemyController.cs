@@ -27,6 +27,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] List<AudioClip> anger;
     [SerializeField] AudioSource audioManager;
 
+    bool isDead = false;
+
     private void Start()
     {
         Debug.Log("stateTimer" + stateTimer);
@@ -71,7 +73,12 @@ public class EnemyController : MonoBehaviour
                 //Destroy();
             }
         }
-
+        if(isDead)
+        {
+            _dispoParticules.Play();
+            _midDispoParticules.Stop();
+            _noDispoParticules.Stop();
+        }
     }
 
     void ChangeState()
@@ -127,9 +134,10 @@ public class EnemyController : MonoBehaviour
 
     private void SuccessHit()
     {
+        isDead = true;
         _successHisParticules.Play();
         aiEnemyController._agent.speed = 0;
-        transform.LookAt(aiEnemyController._player.transform);
+        transform.LookAt(GameObject.Find("Player").GetComponentInChildren<Camera>().transform);
         Invoke("ExploseTarget", 3f);
 
     }
