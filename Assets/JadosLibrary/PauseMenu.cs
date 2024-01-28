@@ -9,6 +9,8 @@ public class PauseMenu : MonoBehaviour
     [HideInInspector] public static bool gameIsPaused = false;
     [Header("Canva Menu Pause")]
     [SerializeField] GameObject _pauseMenuUI;
+
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -22,12 +24,17 @@ public class PauseMenu : MonoBehaviour
         gameIsPaused = false;
         _pauseMenuUI.SetActive(false);
         Time.timeScale = 1;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
     }
     public void Paused() // Fonction de pause 
     {
         gameIsPaused = true;
         _pauseMenuUI.SetActive(true);
         Time.timeScale = 0;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void Retry() // Fonction qui relance la scene 

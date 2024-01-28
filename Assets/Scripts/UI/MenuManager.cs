@@ -6,10 +6,30 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
 
+    [SerializeField] ParticleSystem _feuArtifice;
+    [SerializeField] ParticleSystem _planete;
+
     [SerializeField] GameObject _credits;
+
+    [SerializeField] GameObject _menu;
     void Start()
     {
-        
+        _planete.Play();
+        Invoke("CallFeuArtifice", 7f);
+    }
+
+    public void CallFeuArtifice()
+    {
+        _planete.Stop();
+        _feuArtifice.Play();
+        Invoke("ShowMenu", 3f);
+    }
+
+    public void ShowMenu()
+    {
+        _menu.SetActive(true);
+        _feuArtifice.Stop();
+
     }
 
     void Update()

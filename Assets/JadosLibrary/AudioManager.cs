@@ -24,6 +24,14 @@ public class AudioManager : MonoBehaviour
     }
     private void Update()
     {
+        if (!_audioSource.isPlaying)
+        {
+            NextSong();
+        }
+    }
+
+    public void NextSong()
+    {
         _audioSource.volume = volume;
         if (_loop)
         {
@@ -43,6 +51,7 @@ public class AudioManager : MonoBehaviour
                     _audioSource.clip = songs[_indexFirstMusic];
                 }
             }
+            _audioSource.loop = true;
             _audioSource.Play();
         }
     }
