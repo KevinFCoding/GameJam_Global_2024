@@ -41,6 +41,13 @@ public class PlayerShoot : MonoBehaviour
 
     }
 
+    public void TakeSuccessHit()
+    {
+        _cringe = 0;
+        _cringeSlider.UpdateSliderLifeBar();
+
+    }
+
     public void GameOver()
     {
         _goUI.SetActive(true);
@@ -123,7 +130,7 @@ public class PlayerShoot : MonoBehaviour
 
                 break;
             case EnemyState.Green:
-                TakeCring(-5);
+                TakeSuccessHit();
 
 
                 break;

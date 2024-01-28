@@ -11,6 +11,5 @@ public class CringeBar : MonoBehaviour
     public void UpdateSliderLifeBar()
     {
         cringeSlider.value = _playerShoot._cringe;
-        print(_playerShoot._cringe);
     }
 }

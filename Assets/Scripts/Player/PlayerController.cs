@@ -66,8 +66,6 @@ public class PlayerController : MonoBehaviour
 
         if ( Input.GetKeyDown(KeyCode.Space) )
         {
-            Debug.Log("canDoubleJump");
-            Debug.Log(canDoubleJump);
             if (isGrounded && (Time.time - lastJumpTime >= groundedDelay))
             {
                 rb.AddForce(new Vector3(0.0f, 2.0f, 0.0f) * 7f, ForceMode.Impulse);

@@ -16,21 +16,21 @@ namespace Enemy
 {
     public class AiEnemyController : MonoBehaviour
     {
-        [SerializeField] private NavMeshAgent _agent;
+        public NavMeshAgent _agent;
         [SerializeField] private NavMeshSurface map;
-        private Transform[] _waypoints; 
+        [SerializeField] private Transform[] _waypoints;
         private Animator _animator;
-        private Vector3 _walkPoint; 
+        private Vector3 _walkPoint;
         private float _walkPointRange = 5f;
-        private GameObject _player;
+        public GameObject _player;
 
         private bool _walkPointSet = false;
         private bool _isAttacked = false;
         private bool _playerInSightRange;
         bool _isSafe = false;
-        private const float RangeAgainstPlayer = 50f;
-        private Mood _mood = Mood.Patrolling ;
-        private Transform _currentWayPoint= null;
+        private const float RangeAgainstPlayer = 5f;
+        private Mood _mood = Mood.Patrolling;
+        private Transform _currentWayPoint = null;
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -73,7 +73,7 @@ namespace Enemy
 
             if (_currentWayPoint == null)
                 return false;
-            
+
 
             Vector3 distanceToWayPoint = transform.position - _currentWayPoint.position;
             if (distanceToWayPoint.magnitude < 6f)
@@ -82,11 +82,11 @@ namespace Enemy
                 return true;
 
             }
-            
+
 
             return false;
         }
-        
+
         private void FixedUpdate()
         {
             Action();
@@ -119,15 +119,15 @@ namespace Enemy
                 case Mood.Patrolling:
                     if (distanceToPlayer.magnitude < RangeAgainstPlayer)
                     {
-                        _mood = Mood.Escaping; 
+                        _mood = Mood.Escaping;
                     }
                     else
                     {
-                        Patroling(); 
+                        Patroling();
                     }
                     break;
 
-                case Mood.Chaising: 
+                case Mood.Chaising:
                     ChaisePlayer();
                     break;
             }
@@ -141,9 +141,9 @@ namespace Enemy
             _agent.speed = 14f;
             _agent.SetDestination(_player.transform.position);
         }
-        
 
-        
+
+
         private void Escape()
         {
             Transform playerTransform = _player.transform;
@@ -157,11 +157,11 @@ namespace Enemy
             }
 
         }
-        
-        
-        
 
-        
+
+
+
+
 
         private Transform SelectFleeWaypoint(Transform playerTransform)
         {
@@ -182,7 +182,7 @@ namespace Enemy
                 }
             }
 
-            return bestWaypoint;    
+            return bestWaypoint;
         }
 
 
@@ -196,7 +196,7 @@ namespace Enemy
 
             _agent.speed = 6f;
 
-            if (!_walkPointSet) 
+            if (!_walkPointSet)
                 SearchWalkPoint();
 
             if (_walkPointSet)
@@ -209,7 +209,7 @@ namespace Enemy
                 _walkPointSet = false;
             }
         }
-        
+
 
 
         private void SearchWalkPoint()
@@ -223,6 +223,6 @@ namespace Enemy
 
 
         }
-        
+
     }
 }
