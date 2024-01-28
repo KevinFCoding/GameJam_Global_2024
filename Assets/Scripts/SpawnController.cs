@@ -9,7 +9,7 @@ public class SpawnController : MonoBehaviour
     // make multiple serializable fields
     
     [SerializeField]
-    private GameObject _enemyPrefab;
+    private List<GameObject> _enemyPrefab;
     public List<Spawnner> spawnners;
     
     void Start()
@@ -29,7 +29,7 @@ public class SpawnController : MonoBehaviour
     {
         foreach (Spawnner spawnner in spawnners)
         {
-            Instantiate(_enemyPrefab, new Vector3(spawnner.positionX, spawnner.positionY, spawnner.positionZ), Quaternion.identity);
+            Instantiate(_enemyPrefab[Random.Range(0,_enemyPrefab.Count-1)], spawnner.transform.position, Quaternion.identity);
             
         }
 
@@ -46,7 +46,7 @@ public class SpawnController : MonoBehaviour
 
         int randomSpawnner = Random.Range(0, spawnners.Count);
         Spawnner spawnner = spawnners[randomSpawnner];
-        Instantiate(_enemyPrefab, new Vector3(spawnner.positionX, spawnner.positionY, spawnner.positionZ), Quaternion.identity);
+        Instantiate(_enemyPrefab[Random.Range(0, _enemyPrefab.Count - 1)], spawnner.transform.position, Quaternion.identity);
 
     }
 

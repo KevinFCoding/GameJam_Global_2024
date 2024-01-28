@@ -8,10 +8,17 @@ public enum EnemyState { Green, Yellow, Red }
 
 public class EnemyController : MonoBehaviour
 {
-    
-    
+
+    [SerializeField] ParticleSystem _dispoParticules;
+    [SerializeField] ParticleSystem _midDispoParticules;
+    [SerializeField] ParticleSystem _noDispoParticules;
+    [SerializeField] ParticleSystem _tearsParticules;
+    [SerializeField] ParticleSystem _echecHitParticules;
+    [SerializeField] ParticleSystem _successHisParticules;
+    [SerializeField] ParticleSystem _explosion;
+
     private EnemyState currentState = EnemyState.Green;
-    
+
     private float stateTimer = 4f;
     private AiEnemyController aiEnemyController;
     private SpawnController spawnController;
@@ -19,17 +26,17 @@ public class EnemyController : MonoBehaviour
     private float couldown = 8f;
     private void Start()
     {
-        Debug.Log("stateTimer"+stateTimer);
+        Debug.Log("stateTimer" + stateTimer);
 
         timer = stateTimer;
         aiEnemyController = GetComponent<AiEnemyController>();
         GameObject gameController = GameObject.Find("GameController");
 
         spawnController = gameController.GetComponent<SpawnController>();
-        
+
 
     }
-    
+
     public EnemyState GetCurrentState()
     {
         return currentState;
@@ -40,30 +47,30 @@ public class EnemyController : MonoBehaviour
 
         timer -= Time.deltaTime;
         couldown -= Time.deltaTime;
-    
+
         if (timer <= 0)
         {
             ChangeState();
             timer = stateTimer;
         }
-        if(couldown <= 0)
+        if (couldown <= 0)
         {
             aiEnemyController.changeState(Mood.Escaping);
             couldown = 8f;
         }
-        
-        
-        
-        if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out var hit, Mathf.Infinity))
+
+
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out var hit, Mathf.Infinity))
         {
 
             if (hit.collider.gameObject.CompareTag("Player"))
             {
-                
+
                 //Destroy();
             }
         }
-        
+
     }
 
     void ChangeState()
@@ -72,19 +79,26 @@ public class EnemyController : MonoBehaviour
         switch (currentState)
         {
 
-            
+
             case EnemyState.Green:
                 currentState = EnemyState.Yellow;
+                _dispoParticules.Stop();
+                _midDispoParticules.Play();
+                _noDispoParticules.Stop();
                 break;
             case EnemyState.Yellow:
                 currentState = EnemyState.Red;
+                _dispoParticules.Stop();
+                _midDispoParticules.Stop();
+                _noDispoParticules.Play();
                 break;
             case EnemyState.Red:
                 currentState = EnemyState.Green;
+                _dispoParticules.Play();
+                _midDispoParticules.Stop();
+                _noDispoParticules.Stop();
                 break;
         }
-        Debug.Log("state");
-        Debug.Log(currentState);
     }
 
     public void Reaction(EnemyState state)
@@ -93,26 +107,45 @@ public class EnemyController : MonoBehaviour
         switch (state)
         {
             case EnemyState.Green:
-                Destroy();
+                SuccessHit();
+                _tearsParticules.Stop();
+
                 break;
             case EnemyState.Yellow:
                 aiEnemyController.changeState(Mood.Escaping);
+                _tearsParticules.Play();
                 break;
             case EnemyState.Red:
-                Debug.Log("oh no");
                 aiEnemyController.changeState(Mood.Chaising);
+                _echecHitParticules.Play();
+                _tearsParticules.Stop();
+
                 break;
         }
     }
 
+    private void SuccessHit()
+    {
+        _successHisParticules.Play();
+        aiEnemyController._agent.speed = 0;
+        transform.LookAt(aiEnemyController._player.transform);
+        Invoke("ExploseTarget", 1f);
 
+    }
+
+    private void ExploseTarget()
+    {
+        _explosion.Play();
+        Invoke("Destroy", 0.5f);
+
+    }
     void Destroy()
     {
         Destroy(gameObject);
         spawnController.Resurerection();
-        
+
     }
-    
+
     void OnTriggerEnter(Collider other)
     {
 

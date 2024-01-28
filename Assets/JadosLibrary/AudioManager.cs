@@ -24,6 +24,14 @@ public class AudioManager : MonoBehaviour
     }
     private void Update()
     {
+        if (!_loop && !_audioSource.loop && _audioSource.timeSamples > _audioSource.clip.samples - 3800)
+        {
+            NextSong();
+        }
+    }
+
+    public void NextSong()
+    {
         _audioSource.volume = volume;
         if (_loop)
         {
@@ -31,8 +39,6 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            if (!_audioSource.isPlaying)
-            {
                 _indexFirstMusic++;
                 if (_indexFirstMusic > songs.Length)
                 {
@@ -42,7 +48,8 @@ public class AudioManager : MonoBehaviour
                 {
                     _audioSource.clip = songs[_indexFirstMusic];
                 }
-            }
+            
+            _audioSource.loop = true;
             _audioSource.Play();
         }
     }

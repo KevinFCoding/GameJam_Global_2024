@@ -9,16 +9,26 @@ public class PlayerShoot : MonoBehaviour
     public float weaponRange = 50f;
     public Transform gunEnd;
     [SerializeField] ParticleSystem _shootEffect;
-    //private WaitForSeconds shotDuration = new WaitForSeconds(2f);
     private float nextFire;
     private float timeSinceLastShot = 0f;
-    private float shootDelay = 2f; // Délai de 5 secondes
+    private float shootDelay = 0.3f; // Délai de 5 secondes
     [SerializeField] private CringeBar cringeBar;
 
     [SerializeField] ShakyCame _shakyCame;
+    [SerializeField] GameObject _goUI;
+    [SerializeField] PauseMenu _pauseMenu;
+    [SerializeField] CringeBar _cringeSlider;
 
-    
-    
+    [SerializeField] ParticleSystem _goPart;
+    [SerializeField] ParticleSystem _goRain;
+    [SerializeField] GameObject _goBandes;
+    public bool isAlive = true;
+    [SerializeField] PlayerController _playerController;
+
+    public int _cringe = 0; 
+
+
+
     void Start()
     {
         cringeBar = GameObject.Find("CanvasPlayer").GetComponent<CringeBar>();
@@ -26,14 +36,57 @@ public class PlayerShoot : MonoBehaviour
         {
             playerCamera = Camera.main;
         }
+        _cringeSlider.cringeSlider.value = _cringe;
+        _cringeSlider.UpdateSliderLifeBar();
+    }
+
+    public void TakeCring(int _taken)
+    {
+        _cringe += _taken;
+        _cringeSlider.UpdateSliderLifeBar();
+
+    }
+
+    public void TakeSuccessHit()
+    {
+        _cringe = 0;
+        _cringeSlider.UpdateSliderLifeBar();
+
+    }
+
+    public void GameOver()
+    {
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        _goUI.SetActive(true);
+        _goPart.Play();
+        Invoke("ShowBandesGO", 1.5f);
+    }
+
+    public void ShowBandesGO()
+    {
+        _goBandes.SetActive(true);
+        _goPart.Stop();
+
     }
     private void Update()
     {
-        
-        
-        if (cringeBar.GetCringe() >= 100f)
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            // gameover
+            TakeCring(-5);
+
+        }
+        if (_cringe >= 35f)
+        {
+            isAlive = false;
+            
+            _goRain.Play();
+            _playerController._speed = 0;
+            _playerController._speedMax = 0;
+            
+            Invoke("GameOver", 2f);
+          //  GameOver();
         }
         else
         {
@@ -42,8 +95,8 @@ public class PlayerShoot : MonoBehaviour
             if (cringeAccumulator >= 1f)
             {
                 cringeAccumulator -= 1f;
-                cringeBar.SetCringe(cringeBar.GetCringe() + 1f);
-
+                _cringe+=1;
+                _cringeSlider.UpdateSliderLifeBar();
             }
         }
         // increase cringe by one per second
@@ -60,10 +113,6 @@ public class PlayerShoot : MonoBehaviour
     }
     private float cringeAccumulator = 0f; // Accumulateur pour gérer l'incrément de cringe
 
-
-
-
-
     void Shoot()
     {
         if (timeSinceLastShot < shootDelay)
@@ -79,7 +128,6 @@ public class PlayerShoot : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
-                Debug.Log("Did Hit");
                 EnemyController ennemy = hit.collider.gameObject.GetComponent<EnemyController>();
                 EnemyState states = ennemy.GetCurrentState();
                 ChangeCringe(states);
@@ -94,20 +142,21 @@ public class PlayerShoot : MonoBehaviour
 
     void ChangeCringe(EnemyState states)
     {
-        float cringe = cringeBar.GetCringe();
+        
         switch (states)
         {
             case EnemyState.Red:
-                cringe += 10f;
-                cringeBar.SetCringe(cringe);
+                TakeCring(5);
+
                 break;
             case EnemyState.Yellow:
-                cringe += 5f;
-                cringeBar.SetCringe(cringe);
+                TakeCring(1);
+
                 break;
             case EnemyState.Green:
-                cringe -= 5f;
-                cringeBar.SetCringe(cringe);
+                TakeSuccessHit();
+
+
                 break;
         }
     }
