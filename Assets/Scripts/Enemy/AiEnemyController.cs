@@ -174,9 +174,9 @@ namespace Enemy
                 case Mood.Dying:
                     _isDead = true;
                     EmotionalSkin("LAUGHING");
+                    _animator.SetFloat("speed", 0f);
                     break;
             }
-
         }
 
         // chaising the player

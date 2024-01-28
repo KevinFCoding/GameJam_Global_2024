@@ -130,7 +130,7 @@ public class EnemyController : MonoBehaviour
         _successHisParticules.Play();
         aiEnemyController._agent.speed = 0;
         transform.LookAt(aiEnemyController._player.transform);
-        Invoke("ExploseTarget", 1f);
+        Invoke("ExploseTarget", 3f);
 
     }
 
