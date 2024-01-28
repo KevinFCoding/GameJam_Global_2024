@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-   [SerializeField] private float _speed;
-   [SerializeField] private float _speedMax;
+    public  float _speed;
+    public  float _speedMax;
     [SerializeField] private float _currentSpeed;
     private PlayerMotor _motor;
     public Rigidbody rb;

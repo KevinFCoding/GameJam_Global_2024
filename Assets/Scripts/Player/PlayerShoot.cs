@@ -19,6 +19,12 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] PauseMenu _pauseMenu;
     [SerializeField] CringeBar _cringeSlider;
 
+    [SerializeField] ParticleSystem _goPart;
+    [SerializeField] ParticleSystem _goRain;
+    [SerializeField] GameObject _goBandes;
+    public bool isAlive = true;
+    [SerializeField] PlayerController _playerController;
+
     public int _cringe = 0; 
 
 
@@ -50,8 +56,19 @@ public class PlayerShoot : MonoBehaviour
 
     public void GameOver()
     {
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         _goUI.SetActive(true);
-        _pauseMenu.Paused();
+        _goPart.Play();
+        Invoke("ShowBandesGO", 1.5f);
+    }
+
+    public void ShowBandesGO()
+    {
+        _goBandes.SetActive(true);
+        _goPart.Stop();
+
     }
     private void Update()
     {
@@ -62,7 +79,14 @@ public class PlayerShoot : MonoBehaviour
         }
         if (_cringe >= 35f)
         {
-            GameOver();
+            isAlive = false;
+            
+            _goRain.Play();
+            _playerController._speed = 0;
+            _playerController._speedMax = 0;
+            
+            Invoke("GameOver", 2f);
+          //  GameOver();
         }
         else
         {

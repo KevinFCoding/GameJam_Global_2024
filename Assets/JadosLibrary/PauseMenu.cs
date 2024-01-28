@@ -9,11 +9,11 @@ public class PauseMenu : MonoBehaviour
     [HideInInspector] public static bool gameIsPaused = false;
     [Header("Canva Menu Pause")]
     [SerializeField] GameObject _pauseMenuUI;
-
+    [SerializeField] PlayerShoot _playershoot;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && _playershoot.isAlive)
         {
             if (gameIsPaused) { Resume(); } else { Paused(); }
         }
