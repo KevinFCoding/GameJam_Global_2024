@@ -40,12 +40,16 @@ public class PauseMenu : MonoBehaviour
     public void Retry() // Fonction qui relance la scene 
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Resume();
+        gameIsPaused = false;
+        _pauseMenuUI.SetActive(false);
+        Time.timeScale = 1;
     }
 
     public void Menu() // Fonction qui relance la scene 
     {
-        Resume();
+        gameIsPaused = false;
+        _pauseMenuUI.SetActive(false);
+        Time.timeScale = 1;
         SceneManager.LoadScene("MenuScene");
     }
 }   
