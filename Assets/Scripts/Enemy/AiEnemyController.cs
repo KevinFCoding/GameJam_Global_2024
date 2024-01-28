@@ -38,6 +38,7 @@ namespace Enemy
         private Mood _mood = Mood.Patrolling;
         private Transform _currentWayPoint = null;
         private float previousPointDistance = 0f;
+        private bool _isDead = false;
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -102,7 +103,9 @@ namespace Enemy
 
         private void FixedUpdate()
         {
-            Action();
+            if (!_isDead) Action();
+            
+            
         }
 
         IEnumerator CheckDistanceRoutine() 
@@ -169,6 +172,7 @@ namespace Enemy
                     break;
                 
                 case Mood.Dying:
+                    _isDead = true;
                     EmotionalSkin("LAUGHING");
                     break;
             }

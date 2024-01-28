@@ -18,7 +18,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] ParticleSystem _explosion;
     private EnemyState currentState = EnemyState.Green;
 
-    private float stateTimer = 4f;
+    private float stateTimer = 2f;
     private AiEnemyController aiEnemyController;
     private SpawnController spawnController;
     private float timer;
