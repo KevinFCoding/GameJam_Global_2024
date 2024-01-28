@@ -28,6 +28,7 @@ public class PlayerShoot : MonoBehaviour
     public int _cringe = 0;
 
     [SerializeField] List<AudioClip> jokes;
+    [SerializeField] List<AudioClip> shootSounds;
     [SerializeField] AudioSource audioManager;
     [SerializeField] AudioSource audioJokesManager;
 
@@ -84,11 +85,9 @@ public class PlayerShoot : MonoBehaviour
         if (_cringe >= 35f)
         {
             isAlive = false;
-            
             _goRain.Play();
             _playerController._speed = 0;
             _playerController._speedMax = 0;
-            
             Invoke("GameOver", 2f);
           //  GameOver();
         }
@@ -142,6 +141,8 @@ public class PlayerShoot : MonoBehaviour
 
         // Réinitialiser le temps depuis le dernier tir
         timeSinceLastShot = 0f;
+
+        audioJokesManager.PlayOneShot(shootSounds[Random.Range(0, shootSounds.Count - 1)], .7f);
     }
 
     void ChangeCringe(EnemyState states)
