@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Enemy;
 using UnityEngine;
@@ -23,6 +21,12 @@ public class EnemyController : MonoBehaviour
     private SpawnController spawnController;
     private float timer;
     private float couldown = 8f;
+
+
+    [SerializeField] List<AudioClip> cringes;
+    [SerializeField] List<AudioClip> anger;
+    [SerializeField] AudioSource audioManager;
+
     private void Start()
     {
         Debug.Log("stateTimer" + stateTimer);
@@ -30,7 +34,7 @@ public class EnemyController : MonoBehaviour
         timer = stateTimer;
         aiEnemyController = GetComponent<AiEnemyController>();
         GameObject gameController = GameObject.Find("GameController");
-
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioSource>();
         spawnController = gameController.GetComponent<SpawnController>();
     }
 
@@ -75,8 +79,6 @@ public class EnemyController : MonoBehaviour
 
         switch (currentState)
         {
-
-
             case EnemyState.Green:
                 currentState = EnemyState.Yellow;
                 _dispoParticules.Stop();
@@ -111,13 +113,14 @@ public class EnemyController : MonoBehaviour
                 break;
             case EnemyState.Yellow:
                 aiEnemyController.changeState(Mood.Escaping);
+                audioManager.PlayOneShot(cringes[Random.Range(0, cringes.Count - 1)]);
                 _tearsParticules.Play();
                 break;
             case EnemyState.Red:
                 aiEnemyController.changeState(Mood.Chaising);
                 _echecHitParticules.Play();
                 _tearsParticules.Stop();
-
+                audioManager.PlayOneShot(anger[Random.Range(0, anger.Count - 1)]);
                 break;
         }
     }

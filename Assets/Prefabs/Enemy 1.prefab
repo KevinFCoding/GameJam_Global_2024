@@ -5467,6 +5467,14 @@ MonoBehaviour:
   _echecHitParticules: {fileID: 577360054247771353}
   _successHisParticules: {fileID: 6885816947044553719}
   _explosion: {fileID: 5307545825603598474}
+  cringes:
+  - {fileID: 8300000, guid: b6d429c0d7256474384692cdaa0b02d2, type: 3}
+  - {fileID: 8300000, guid: 00c4998a28502654ba5072abb919ca3d, type: 3}
+  - {fileID: 8300000, guid: 5467e75466fe90f4281babf28702c661, type: 3}
+  - {fileID: 8300000, guid: 11790fc689c163f4199d437c28119f6d, type: 3}
+  anger:
+  - {fileID: 8300000, guid: 3172e87f50ca39c40a95945c5b22cd63, type: 3}
+  audioManager: {fileID: 0}
 --- !u!95 &8389791290355155912
 Animator:
   serializedVersion: 5
